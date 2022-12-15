@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.revolut.core.ui_kit.browser.InAppBrowserTopBarView
+        android:id="@+id/inAppBrowserView_topBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toTopOf="@id/inAppBrowserView_webView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <WebView
+        android:id="@+id/inAppBrowserView_webView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintBottom_toTopOf="@id/inAppBrowserView_bottomBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inAppBrowserView_topBar" />
+
+    <ProgressBar
+        android:id="@+id/inAppBrowserView_progressView"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:max="100"
+        android:progressDrawable="@drawable/internal_in_app_browser_progress_bar"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/inAppBrowserView_webView"
+        tools:progress="20" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inAppBrowserView_suggestions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?uikit_colorBackground"
+        android:elevation="12dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/inAppBrowserView_bottomBar"
+        tools:visibility="visible" />
+
+    <com.revolut.core.ui_kit.browser.InAppBrowserBottomBarView
+        android:id="@+id/inAppBrowserView_bottomBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
