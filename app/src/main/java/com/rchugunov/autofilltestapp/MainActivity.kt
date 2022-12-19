@@ -18,6 +18,6 @@ class MainActivity : AppCompatActivity() {
         CobrowseIO.instance().license("Av3013hRuDUy2g");
         CobrowseIO.instance().start(this);
 
-        binding.webView.loadUrl("https://www.amazon.co.uk/")
+        binding.webView.loadUrl("http://192.168.1.101:8080/")
     }
 }
