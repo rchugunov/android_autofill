@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Autofill Framework Test App</string>
+    <string name="enable_autofill_service">Enable autofill service</string>
+</resources>

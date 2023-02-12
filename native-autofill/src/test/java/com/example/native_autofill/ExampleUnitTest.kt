@@ -1,4 +1,4 @@
-package com.rchugunov.autofilltestapp
+package com.example.native_autofill
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
