@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.native_autofill.databinding.ActivityMainBinding
 
+
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy {
@@ -21,7 +22,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.webview.settings.javaScriptEnabled = true
-        binding.webview.loadUrl("https://stripe-payments-demo.appspot.com/")
+        binding.webview.loadUrl(BuildConfig.URL)
+//        binding.webview.loadUrl("https://stripe-payments-demo.appspot.com/")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             binding.enableAutofillButton.setOnClickListener {
