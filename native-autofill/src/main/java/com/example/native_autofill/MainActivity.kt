@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.webview.settings.javaScriptEnabled = true
         binding.webview.loadUrl(BuildConfig.URL)
-//        binding.webview.loadUrl("https://stripe-payments-demo.appspot.com/")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             binding.enableAutofillButton.setOnClickListener {

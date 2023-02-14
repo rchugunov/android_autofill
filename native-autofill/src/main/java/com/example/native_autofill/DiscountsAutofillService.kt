@@ -10,59 +10,42 @@ import android.view.autofill.AutofillValue
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 
+@Suppress("DEPRECATION")
 @RequiresApi(Build.VERSION_CODES.O)
 class DiscountsAutofillService : AutofillService() {
 
-    override fun onFillRequest(request: FillRequest, cancellationSignal: CancellationSignal, callback: FillCallback) {
-        // Get the structure from the request
+    override fun onFillRequest(
+        request: FillRequest,
+        cancellationSignal: CancellationSignal,
+        callback: FillCallback
+    ) {
+
         val context: List<FillContext> = request.fillContexts
         val structure: AssistStructure = context[context.size - 1].structure
 
-//        // Traverse the structure looking for nodes to fill out
-//        val parsedStructure: ParsedStructure =
-        val autofillMap = mutableMapOf<Field, AutofillId>()
-        parseStructure(structure, autofillMap)
-//
-//        // Fetch user data that matches the fields
-//        val (username: String, password: String) = fetchUserData(parsedStructure)
+        val autofillStructure = parseStructure(structure)
 
-        // Build the presentation of the datasets
-        if (autofillMap.isNotEmpty()) {
-            val usernamePresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
-            usernamePresentation.setTextViewText(android.R.id.text1, "Ramsi Johnson")
-            val emailPresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
-            emailPresentation.setTextViewText(android.R.id.text1, "ramsi.johnson@jmail.com")
-//
-            // Add a dataset to the response
+        if (autofillStructure.autofillMap.containsKey(Field.COUPON)) {
+
+            val promocodes = getPromocodes(autofillStructure.url)
+
             val fillResponse: FillResponse = FillResponse.Builder()
-                .addDataset(
-                    Dataset.Builder()
-                        .setValue(
-                            autofillMap[Field.NAME]!!,
-                            AutofillValue.forText("Ramsi Johnson"),
-                            usernamePresentation
+                .apply {
+                    promocodes.forEach { promocode ->
+                        val promocodePresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1).apply {
+                            setTextViewText(android.R.id.text1, "Promocode $promocode")
+                        }
+                        addDataset(
+                            Dataset.Builder()
+                                .setValue(
+                                    autofillStructure.autofillMap[Field.COUPON]!!,
+                                    AutofillValue.forText(promocode),
+                                    promocodePresentation
+                                )
+                                .build()
                         )
-                        .setValue(
-                            autofillMap[Field.EMAIL]!!,
-                            AutofillValue.forText("ramsi.johnson@jmail.com"),
-                            emailPresentation
-                        )
-                        .build()
-                )
-                .addDataset(
-                    Dataset.Builder()
-                        .setValue(
-                            autofillMap[Field.NAME]!!,
-                            AutofillValue.forText("Jack Nickolson"),
-                            usernamePresentation
-                        )
-                        .setValue(
-                            autofillMap[Field.EMAIL]!!,
-                            AutofillValue.forText("jacki123@jmail.com"),
-                            emailPresentation
-                        )
-                        .build()
-                )
+                    }
+                }
                 .build()
 
             // If there are no errors, call onSuccess() and pass the response
@@ -72,10 +55,18 @@ class DiscountsAutofillService : AutofillService() {
         }
     }
 
-    private fun parseStructure(
-        structure: AssistStructure,
-        autofillMap: MutableMap<Field, AutofillId>
-    ) {
+    private fun getPromocodes(url: String?): List<String> {
+        return if (url?.contains("starfish") == true) { // тут может быть логика вашего приложения
+            listOf("NEWYEAR23", "VALENTINE14", "1PURCHASE")
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun parseStructure(structure: AssistStructure): ResultStructure {
+
+        val resultStructure = ResultStructure()
+
         val windowNodes: List<AssistStructure.WindowNode> =
             structure.run {
                 (0 until windowNodeCount).map { getWindowNodeAt(it) }
@@ -83,42 +74,46 @@ class DiscountsAutofillService : AutofillService() {
 
         windowNodes.forEach { windowNode: AssistStructure.WindowNode ->
             val viewNode: ViewNode? = windowNode.rootViewNode
-            viewNode?.let { traverseNode(it, autofillMap) }
+            viewNode?.let { traverseNode(it, resultStructure) }
         }
+        return resultStructure
     }
 
-    private fun traverseNode(viewNode: ViewNode, autofillMap: MutableMap<Field, AutofillId>) {
+    private fun traverseNode(viewNode: ViewNode, resultStructure: ResultStructure) {
+
+        if (viewNode.className?.contains("android.webkit.WebView") == true) {
+            resultStructure.url = viewNode.webDomain
+        }
+
         viewNode.htmlInfo?.attributes
             ?.map { pair -> pair.first to pair.second }
             ?.forEach { (attrName, attrValue) ->
-                if (attrName.equals("name", ignoreCase = true) && attrValue.equals("name", ignoreCase = true)) {
-                    autofillMap[Field.NAME] = viewNode.autofillId!!
-                }
-                if (attrName.equals("name", ignoreCase = true) && attrValue.equals("email", ignoreCase = true)) {
-                    autofillMap[Field.EMAIL] = viewNode.autofillId!!
+                if (attrName.equals("name", ignoreCase = true) && attrValue.equals("promocode", ignoreCase = true) ||
+                    attrName.equals("label", ignoreCase = true) && attrValue.equals("promocode", ignoreCase = true)
+                ) {
+                    resultStructure.autofillMap[Field.COUPON] = viewNode.autofillId!!
                 }
             }
 
-        val children: List<ViewNode> =
-            viewNode.run {
-                (0 until childCount).map { getChildAt(it) }
-            }
+        val children: List<ViewNode> = viewNode.run {
+            (0 until childCount).map { getChildAt(it) }
+        }
 
         children.forEach { childNode: ViewNode ->
-            traverseNode(childNode, autofillMap)
+            traverseNode(childNode, resultStructure)
         }
     }
-
-    data class ParsedStructure(var usernameId: AutofillId, var passwordId: AutofillId)
-
-    data class UserData(var username: String, var password: String)
 
     override fun onSaveRequest(request: SaveRequest, callback: SaveCallback) {
 
     }
 
+    data class ResultStructure(
+        var url: String? = null,
+        val autofillMap: MutableMap<Field, AutofillId> = mutableMapOf()
+    )
+
     enum class Field {
-        NAME,
-        EMAIL
+        COUPON,
     }
 }
