@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "AutofillTestApp"
 include ':autofill-key-events'
 include ':native-autofill'
+include ':autofill-js'
