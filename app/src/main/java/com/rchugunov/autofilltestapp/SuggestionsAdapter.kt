@@ -1,25 +1,26 @@
 package com.rchugunov.autofilltestapp
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
+import com.rchugunov.autofilltestapp.databinding.LayoutAutofillItemBinding
 
 class SuggestionsAdapter(private val onSuggestionClicked: (Suggestion) -> Unit) : ListAdapter<Suggestion, SuggestionsAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     init {
         submitList(
             listOf(
-                Suggestion("Suggestion1"),
-                Suggestion("Suggestion2"),
-                Suggestion("Suggestion3"),
+                Suggestion("PROMO1!"),
+                Suggestion("VALENTINE14"),
+                Suggestion("NY23"),
             )
         )
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(Chip(parent.context))
+        return ViewHolder(LayoutAutofillItemBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -42,9 +43,12 @@ class SuggestionsAdapter(private val onSuggestionClicked: (Suggestion) -> Unit) 
         }
     }
 
-    class ViewHolder(val chipView: Chip) : RecyclerView.ViewHolder(chipView)
+    class ViewHolder(binding: LayoutAutofillItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val chipView = binding.chip
+    }
 }
 
 data class Suggestion(
-    val value: String
+    val value: String,
+    val description: String = ""
 )

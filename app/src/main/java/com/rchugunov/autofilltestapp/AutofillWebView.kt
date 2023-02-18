@@ -57,8 +57,7 @@ class AutofillWebView @JvmOverloads constructor(
         }
     }
 
-    private val softKeyboardObserver: (WindowInsetsCompat) -> Unit = { insets ->
-        val isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+    private val softKeyboardObserver: (Boolean) -> Unit = { isKeyboardVisible ->
         binding.inAppBrowserViewSuggestions.isVisible = isKeyboardVisible
     }
 
@@ -66,9 +65,16 @@ class AutofillWebView @JvmOverloads constructor(
         super.onAttachedToWindow()
 
         ViewCompat.setOnApplyWindowInsetsListener((context as Activity).window.decorView) { view, insets ->
-            softKeyboardObserver(insets)
+            val isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            softKeyboardObserver(isKeyboardVisible)
             return@setOnApplyWindowInsetsListener ViewCompat.onApplyWindowInsets(view, insets)
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+
+        ViewCompat.setOnApplyWindowInsetsListener((context as Activity).window.decorView, null)
     }
 
     fun loadUrl(url: String) {
