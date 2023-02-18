@@ -1,8 +1,8 @@
-package com.rchugunov.autofilltestapp
+package com.rchugunov.autofillkeyevents
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.rchugunov.autofilltestapp.databinding.ActivityMainBinding
+import com.rchugunov.autofillkeyevents.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

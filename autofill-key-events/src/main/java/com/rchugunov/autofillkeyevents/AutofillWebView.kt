@@ -1,4 +1,4 @@
-package com.rchugunov.autofilltestapp
+package com.rchugunov.autofillkeyevents
 
 import android.app.Activity
 import android.content.Context
@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import com.rchugunov.autofilltestapp.databinding.LayoutAutofillBinding
+import com.rchugunov.autofillkeyevents.databinding.LayoutAutofillBinding
 
 class AutofillWebView @JvmOverloads constructor(
     context: Context,

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.rchugunov.autofilltestapp'
+    namespace 'com.rchugunov.autofillkeyevents'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.rchugunov.autofilltestapp"
+        applicationId "com.rchugunov.autofillkeyevents"
         minSdk 24
         targetSdk 33
         versionCode 1

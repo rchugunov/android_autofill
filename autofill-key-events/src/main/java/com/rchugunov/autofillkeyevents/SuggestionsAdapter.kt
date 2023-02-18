@@ -1,11 +1,11 @@
-package com.rchugunov.autofilltestapp
+package com.rchugunov.autofillkeyevents
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.rchugunov.autofilltestapp.databinding.LayoutAutofillItemBinding
+import com.rchugunov.autofillkeyevents.databinding.LayoutAutofillItemBinding
 
 class SuggestionsAdapter(private val onSuggestionClicked: (Suggestion) -> Unit) : ListAdapter<Suggestion, SuggestionsAdapter.ViewHolder>(DIFF_CALLBACK) {
 
