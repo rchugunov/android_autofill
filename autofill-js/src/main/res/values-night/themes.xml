@@ -1,6 +1,6 @@
-<resources>
 
-    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+<resources>
+    <style name="AppTheme" parent="Theme.Material3.Dark">
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
@@ -26,16 +26,11 @@
         <item name="colorOutline">@color/md_theme_dark_outline</item>
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
-        <item name="colorCustomColor1">#58dbc3</item>
-        <item name="colorOnCustomColor1">#00382f</item>
-        <item name="colorCustomColor1Container">#005045</item>
-        <item name="colorOnCustomColor1Container">#77f8de</item>
-        <item name="harmonizeCustomColor1">true</item>
-        <item name="colorCustomColor2">#5fe200</item>
-        <item name="colorOnCustomColor2">#123800</item>
-        <item name="colorCustomColor2Container">#1e5200</item>
-        <item name="colorOnCustomColor2Container">#7fff3a</item>
-        <item name="harmonizeCustomColor2">false</item>
+        <item name="colorCustomColor1">#b3c5ff</item>
+        <item name="colorOnCustomColor1">#002b74</item>
+        <item name="colorCustomColor1Container">#003fa3</item>
+        <item name="colorOnCustomColor1Container">#dae2ff</item>
+        <item name="harmonizeCustomColor1">false</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
     </style>
 </resources>
